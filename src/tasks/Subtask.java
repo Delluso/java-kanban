@@ -1,7 +1,7 @@
 package tasks;
 
 public class Subtask extends Task {
-    Epic epic;
+    private Epic epic;
 
     public Subtask(int id, String title, String description, Epic epic) {
         super(id, title, description);
@@ -9,7 +9,7 @@ public class Subtask extends Task {
     }
 
     public void setState(State state) {
-        this.state = state;
+        super.setState(state);
         epic.updateState();
     }
 
@@ -17,10 +17,10 @@ public class Subtask extends Task {
     public String toString() {
         return "Subtask{" +
                 "epic=" + epic +
-                ", id=" + id +
-                ", title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                ", state=" + state +
+                ", id=" + getId() +
+                ", title='" + getTitle() + '\'' +
+                ", description='" + getDescription() + '\'' +
+                ", state=" + getState() +
                 '}';
     }
 }

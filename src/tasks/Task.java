@@ -2,10 +2,10 @@ package tasks;
 
 public class Task {
 
-    protected int id;
-    protected String title;
-    protected String description;
-    protected State state;
+    private int id;
+    private String title;
+    private String description;
+    private State state;
 
     public Task(int id, String title, String description) {
         this.id = id;
@@ -32,6 +32,14 @@ public class Task {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     @Override
