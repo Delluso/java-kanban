@@ -7,9 +7,9 @@ import java.util.Map;
 
 public class TaskManager {
 
-    Map<Integer, Task> taskById = new HashMap<>();
-    Map<Integer, Epic> epicById = new HashMap<>();
-    Map<Integer, Subtask> subtaskById = new HashMap<>();
+    private final Map<Integer, Task> taskById = new HashMap<>();
+    private final Map<Integer, Epic> epicById = new HashMap<>();
+    private final Map<Integer, Subtask> subtaskById = new HashMap<>();
 
     static int idCounter;
 
@@ -31,6 +31,9 @@ public class TaskManager {
     }
 
     public Subtask generateSub(String title, String description, int id) {
+        if(!epicById.containsKey(id)){
+            return null;
+        }
         Epic epic = getEpicById(id);
         Subtask subtask = new Subtask(generateId(), title, description, epic);
         saveSubtask(subtask);
@@ -61,7 +64,6 @@ public class TaskManager {
 
     public void updateSubtask(Subtask subtask) {
         subtaskById.put(subtask.getId(), subtask);
-
     }
 
     public List<Task> getAllTasks() {
@@ -106,6 +108,11 @@ public class TaskManager {
     }
 
     public void removeEpicById(int id) {
+        Epic epic = epicById.get(id);
+        for (Subtask subtask : epic.getSubtasks()){
+        int subtaskId = subtask.getId();
+        removeSubtaskById(subtaskId);
+        }
         epicById.remove(id);
     }
 
@@ -114,17 +121,10 @@ public class TaskManager {
     }
 
     public List<Subtask> getSubtasks(int id) {
+        if(!epicById.containsKey(id)){
+            return null;
+        }
         Epic epic = getEpicById(id);
         return epic.getSubtasks();
-    }
-
-    public void setStateTask(int id, State state) {
-        Task task = getTaskById(id);
-        task.setState(state);
-    }
-
-    public void setStateSubtask(int id, State state) {
-        Subtask subtask = getSubtaskById(id);
-        subtask.setState(state);
     }
 }
