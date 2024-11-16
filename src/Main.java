@@ -1,22 +1,26 @@
+import managers.InMemoryHistoryManager;
+import managers.Managers;
+import managers.TaskManager;
 import tasks.Epic;
 import tasks.State;
 import tasks.Subtask;
 import tasks.Task;
-import tasks.TaskManager;
+import managers.InMemoryTaskManager;
 
 public class Main {
 
     public static void main(String[] args) {
 
-        TaskManager manager = new TaskManager();
+        TaskManager manager = Managers.getDefault();
+
 
         Task task1 = manager.generateTask("Сделать кофе", "пойти на кухню и сделать");
-        Task task2 = manager.generateTask("Продать гараж","продать дорого");
+        Task task2 = manager.generateTask("Продать гараж", "продать дорого");
         Epic epic1 = manager.generateEpicTask("Убраться в квартире", "Сделать сегодня");
         Epic epic2 = manager.generateEpicTask("Выйти на улицу", "Говорят надо");
-        Subtask subtask1 = manager.generateSub("Помыть пол","Помыть тщательно", 3);
-        Subtask subtask2 = manager.generateSub("Вытереть пыль","Сделать это везде", 3);
-        Subtask subtask3 = manager.generateSub("Одеться","На улице холодно",4);
+        Subtask subtask1 = manager.generateSub("Помыть пол", "Помыть тщательно", 3);
+        Subtask subtask2 = manager.generateSub("Вытереть пыль", "Сделать это везде", 3);
+        Subtask subtask3 = manager.generateSub("Одеться", "На улице холодно", 4);
 
         System.out.println(manager.getAllTasks());
         System.out.println(manager.getAllEpics());
@@ -32,6 +36,13 @@ public class Main {
         subtask1 = manager.getSubtaskById(5);
         subtask1.setState(State.DONE);
         System.out.println(subtask1);
+
+        System.out.println("==================================================================================");
+
+        System.out.println("История:");
+        for (Task task : manager.getHistoryManager().getHistory()) {
+            System.out.println(task);
+        }
 
         System.out.println("==================================================================================");
 
