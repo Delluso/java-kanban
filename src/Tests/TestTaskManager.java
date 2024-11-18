@@ -12,21 +12,21 @@ import tasks.Task;
 
 class TestTaskManager {
     @Test
-    void taskEquals() {
+    void sameIdTasksShouldBeEquals() {
         Task task = new Task(31, "title", "description");
         Task task1 = new Task(31, "title1", "description1");
         Assertions.assertEquals(task, task1);
     }
 
     @Test
-    void epicEquals() {
+    void sameIdEpicsShouldBeEquals() {
         Epic epic = new Epic(11, "title", "description");
         Epic epic1 = new Epic(11, "title1", "description1");
         Assertions.assertEquals(epic, epic1);
     }
 
     @Test
-    void subEquals() {
+    void sameIdSubtasksShouldBeEquals() {
         Epic epic = new Epic(11, "title", "description");
         Subtask subtask = new Subtask(31, "title", "description", epic);
         Subtask subtask1 = new Subtask(31, "title1", "description1", epic);
