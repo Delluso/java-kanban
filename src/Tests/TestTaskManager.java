@@ -86,7 +86,7 @@ class TestTaskManager {
         TaskManager manager = Managers.getDefault();
         HistoryManager historyManager = Managers.getDefaultHistory();
         Task task = manager.generateTask("task", "description");
-        Task task2 = manager.generateTask("task2","description2");
+        Task task2 = manager.generateTask("task2", "description2");
         manager.saveTask(task);
         manager.saveTask(task2);
         manager.getTaskById(1);
@@ -95,7 +95,7 @@ class TestTaskManager {
     }
 
     @Test
-    void taskShouldSaveInHistoryOnlyOnes(){
+    void taskShouldSaveInHistoryOnlyOnes() {
         TaskManager manager = Managers.getDefault();
         Task task = manager.generateTask("title", "description");
         Epic epic = manager.generateEpicTask("epicTitle", "epicDescription");
