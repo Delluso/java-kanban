@@ -1,5 +1,3 @@
-package Tests;
-
 import managers.HistoryManager;
 import managers.Managers;
 import managers.TaskManager;
@@ -81,11 +79,38 @@ class TestTaskManager {
         Assertions.assertEquals(task.getDescription(), task1.getDescription());
     }
 
-    /*
-проверьте, что объект Epic нельзя добавить в самого себя в виде подзадачи;
-проверьте, что объект Subtask нельзя сделать своим же эпиком;
-проверьте, что задачи с заданным id и сгенерированным id не конфликтуют внутри менеджера;
+    @Test
+    void taskShouldSaveInHistory() {
+        TaskManager manager = Managers.getDefault();
+        HistoryManager historyManager = Managers.getDefaultHistory();
+        Task task = manager.generateTask("task", "description");
+        Task task2 = manager.generateTask("task2", "description2");
+        manager.saveTask(task);
+        manager.saveTask(task2);
+        manager.getTaskById(1);
+        manager.getTaskById(2);
+        Assertions.assertNotNull(historyManager.getHistory());
+    }
 
-Как я понимаю в текущей реализации эти три теста не применимы.
-   */
+    @Test
+    void taskShouldSaveInHistoryOnlyOnes() {
+        TaskManager manager = Managers.getDefault();
+        Task task = manager.generateTask("title", "description");
+        Epic epic = manager.generateEpicTask("epicTitle", "epicDescription");
+        Subtask subtask = manager.generateSub("subTitle", "subDescription", epic.getId());
+
+        manager.saveTask(task);
+        manager.saveEpic(epic);
+        manager.saveSubtask(subtask);
+
+        manager.getTaskById(task.getId());
+        manager.getEpicById(epic.getId());
+        manager.getSubtaskById(subtask.getId());
+        manager.getTaskById(task.getId());
+
+        Assertions.assertNotEquals(task, manager.getHistory().getFirst());
+        Assertions.assertEquals(task, manager.getHistory().getLast());
+        Assertions.assertEquals(3, manager.getHistory().size());
+
+    }
 }
