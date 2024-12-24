@@ -13,6 +13,10 @@ public class Subtask extends Task {
         epic.updateState();
     }
 
+    public Epic getEpic() {
+        return epic;
+    }
+
     @Override
     public String toString() {
         return "Subtask{" +

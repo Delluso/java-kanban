@@ -30,8 +30,10 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     @Override
     public void remove(int id) {
-        historyList.removeNode(historyMap.get(id));
-        historyMap.remove(id);
+        if (historyMap.containsKey(id)) {
+            historyList.removeNode(historyMap.get(id));
+            historyMap.remove(id);
+        }
     }
 
 

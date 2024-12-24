@@ -104,16 +104,28 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void clearAllTasks() {
+        for (Integer key : taskById.keySet()) {
+            historyManager.remove(key);
+        }
         taskById.clear();
     }
 
     @Override
     public void clearAllEpics() {
+        for (Integer key : epicById.keySet()) {
+            for (Integer subtaskKey : subtaskById.keySet()) {
+                historyManager.remove(subtaskKey);
+            }
+            historyManager.remove(key);
+        }
         epicById.clear();
     }
 
     @Override
     public void clearAllSubtasks() {
+        for (Integer key : subtaskById.keySet()) {
+            historyManager.remove(key);
+        }
         subtaskById.clear();
     }
 
@@ -138,6 +150,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void removeTaskById(int id) {
         taskById.remove(id);
+        historyManager.remove(id);
     }
 
     @Override
@@ -146,13 +159,24 @@ public class InMemoryTaskManager implements TaskManager {
         for (Subtask subtask : epic.getSubtasks()) {
             int subtaskId = subtask.getId();
             removeSubtaskById(subtaskId);
+            //Тут идет очистка мапы сабтасок от тех что содержались в эпике.
+            //Если удалю весь список, то будут удалены сабтаски и от других эпиков.
         }
         epicById.remove(id);
+        historyManager.remove(id);
     }
 
     @Override
     public void removeSubtaskById(int id) {
+        Subtask subtask = subtaskById.get(id);
+        Epic epic = subtask.getEpic();
+        for (Subtask subtaskInEpic : epic.getSubtasks()) {
+            if (subtaskInEpic.equals(subtask)) {
+                epic.getSubtasks().remove(subtask);
+            }
+        }
         subtaskById.remove(id);
+        historyManager.remove(id);
     }
 
     @Override
